@@ -96,7 +96,7 @@ npm run dev
 1. **Semantic Pre-filtering:**  
    Researcher interests and grant descriptions are embedded using **Sentence Transformers**.
 2. **LLM Reasoning:**  
-   Fine-tuned scoring through **OpenAI GPT-4o-mini** based on extracted embeddings.
+   Fine-tuned scoring through **OpenAI GPT-4o-mini** and **OpenAI GPT-4.1-mini** based on extracted embeddings.
 3. **Deduplication:**  
    Fingerprinting is applied to ensure no redundant researcher-grant matches are stored.
 
