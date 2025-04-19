@@ -120,6 +120,15 @@ npm run dev
 
 ---
 
+## 👤 Author
+
+**Pouria Mortezaagha**  
+Data Analyst • AI Researcher • Full-Stack Developer  
+[LinkedIn](https://www.linkedin.com/in/pouria-mortezaagha/)  
+✉️ pouriamortezaagha7@gmail.com
+
+---
+
 ## 📜 License
 
 Distributed under the **MIT License** — free to use, modify, and distribute.
