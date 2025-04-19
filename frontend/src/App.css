@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f9fafb;
+  color: #1f2937;
+}
+
+h1, h2, h3 {
+  font-weight: bold;
+}
+
+.container {
+  @apply mx-auto p-6;
+}
+
+.link {
+  @apply text-blue-500 hover:text-blue-700;
+}

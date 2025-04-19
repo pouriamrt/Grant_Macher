@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom base styles */
+body {
+  @apply font-sans bg-gray-50 text-gray-800;
+}
+
+a {
+  @apply text-blue-600 hover:text-blue-800 transition;
+}
+
+h1, h2, h3 {
+  @apply font-bold;
+}
