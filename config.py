@@ -11,9 +11,9 @@ class Config:
         or 'sqlite:///' + os.path.join(basedir, 'app.db') #'postgresql://user:password@localhost/grantmatch'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
-    MAIL_SERVER = 'smtp.example.com'
+    MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 587
-    MAIL_USERNAME = 'noreply@example.com'
-    MAIL_PASSWORD = 'yourpassword'
+    MAIL_USERNAME = 'pouriamortezaagha7@gmail.com'
+    MAIL_PASSWORD = 'ksgu zakr rwmz orvy'
     MAIL_USE_TLS = True
-    MAIL_DEFAULT_SENDER = 'noreply@example.com'
+    MAIL_DEFAULT_SENDER = 'pouriamortezaagha7@gmail.com'

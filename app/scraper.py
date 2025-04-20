@@ -1,9 +1,11 @@
 import requests
-from app.models import Grant
+from app.models import Grant, Researcher
 from app import db
 from scrapegraphai.graphs import SmartScraperGraph
 # import json
 import time
+import re
+from app.utils.utils import remove_duplicates_preserve_order, initials_in_email
 from serpapi import GoogleSearch
 from dotenv import load_dotenv
 from os import getenv
@@ -116,16 +118,19 @@ def scrape_nih_api():
 
 
 ########################### ORCID ###########################
-def search_google_serpapi(query):
+def search_google_serpapi(query, value='link'):
     params = {
         "engine": "google",
         "q": query,
+        "location": "Ottawa, Ontario, Canada",
+        "hl": "en",
+        "gl": "ca",
         "google_domain": "google.ca",
         "api_key": getenv("SERP_API_KEY"),
     }
     search = GoogleSearch(params)
     results = search.get_dict()
-    return [(r['title'], r['link']) for r in results.get('organic_results', [])]
+    return [(r['title'], r[value]) for r in results.get('organic_results', [])]
 
 def create_profile_paragraph(profile):
     parts = []
@@ -189,3 +194,27 @@ def get_orcid_profile(scientist_name):
         print(f"Error: {response.status_code}")
         return None
     
+    
+########################### Email ###########################
+def find_email(scientist_name):
+    email = Researcher.query.filter(db.func.lower(Researcher.name) == scientist_name.lower()).first().email
+    if email:
+        return [email]
+
+    query = f"{scientist_name} email"
+    results = search_google_serpapi(query, value='snippet')
+
+    all_text = " ".join([
+        result[0] + " " + result[1]
+        for result in results
+    ])
+
+    email_pattern = r'[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+'
+    emails = re.findall(email_pattern, all_text)
+    emails = [email.lstrip('.,;:').rstrip('.,;:') for email in emails]
+    emails = remove_duplicates_preserve_order(emails)
+
+    valid_emails = [email for email in emails if initials_in_email(email, scientist_name)]
+    if len(valid_emails) >= 2:
+        return valid_emails[:2]
+    return valid_emails

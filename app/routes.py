@@ -3,7 +3,7 @@ from app.models import Match, Researcher, Grant
 from app import mail
 from flask_mail import Message
 from app.agents.grant_matcher import generate_matches
-from app.scraper import scrape_nih_api, scrape_cihr_ai
+from app.scraper import scrape_nih_api, scrape_cihr_ai, find_email
 
 main = Blueprint('main', __name__)
 
@@ -18,15 +18,62 @@ def run_match_agent():
 
 @main.route('/send_matches', methods=['POST'])
 def send_matches():
-    matches = Match.query.all()
+    match_id = request.form.get('match_id', None)
+
+    if match_id:
+        match = Match.query.filter_by(id=match_id).first()
+        if not match:
+            return jsonify({"error": "No match found with the given ID."}), 404
+        matches = [match]
+    else:
+        matches = Match.query.all()
+
+    sent_emails = 0
     for match in matches:
+        if not match:
+            continue
+        
         researcher = Researcher.query.get(match.researcher_id)
         grant = Grant.query.get(match.grant_id)
-        explanation = f"This grant aligns with your interests in {researcher.keywords}."
-        msg = Message("Grant Match Found!", recipients=[researcher.email])
-        msg.body = f"Hi {researcher.name},\n\nWe found a potential grant match for you:\n\nTitle: {grant.title}\nDescription: {grant.description}\nSource: {grant.source}\nScore: {match.match_score:.2f}\n\nExplanation: {explanation}"
-        mail.send(msg)
-    return jsonify({"status": "Emails sent"})
+        
+        if not researcher or not grant:
+            continue
+        print(f"Preparing to email researcher: {researcher.name}")
+
+        emails = find_email(researcher.name)
+        if not emails:
+            print(f"No emails found for {researcher.name}, skipping.")
+            continue
+
+        for email in emails:
+            try:
+                msg = Message(
+                    subject="Grant Match Found!",
+                    recipients=[email]
+                )
+                msg.body = (
+                    f"Hi {researcher.name},\n\n"
+                    f"We found a potential grant match for you:\n\n"
+                    f"Title: {grant.title}\n"
+                    f"Description: {grant.description}\n"
+                    f"Source: {grant.source}\n"
+                    f"Amount: {grant.amount}\n"
+                    f"Deadline: {grant.deadline}\n"
+                    f"Score: {match.match_score:.2f}\n\n"
+                    f"Explanation: {match.reason}\n\n"
+                    f"Best regards,\nGrant Matcher Team"
+                )
+                mail.send(msg)
+                sent_emails += 1
+                print(f"Email successfully sent to {email}")
+            except Exception as e:
+                print(f"Failed to send email to {email}: {str(e)}")
+
+    if sent_emails == 0:
+        return jsonify({"warning": "No emails were sent. Check if researchers have valid emails."}), 200
+
+    return jsonify({"status": f"{sent_emails} emails sent successfully."}), 200
+
 
 @main.route('/scrape_nih', methods=['POST'])
 def scrape_nih():
@@ -72,6 +119,7 @@ def get_matches():
     matches = Match.query.all()
     result = [
         {
+            'id': m.id,
             'researcher_name': m.researcher.name if m.researcher else None,
             'grant_title': m.grant.title if m.grant else None,
             'match_score': m.match_score,

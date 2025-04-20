@@ -30,6 +30,21 @@ export const fetchMatches = async () => {
   return response.data;
 };
 
+// Emailing a single match
+export const sendMatchEmail = async (matchId) => {
+  const formData = new FormData();
+  formData.append('match_id', matchId);
+
+  const response = await axios.post(`${API_BASE_URL}/send_matches`, formData);
+  return response.data;
+};
+
+// Emailing all matches
+export const sendAllMatchesEmail = async () => {
+  const response = await axios.post(`${API_BASE_URL}/send_matches`);
+  return response.data;
+};
+
 // Matching
 export const matchSpecificResearcher = async (researcherName) => {
   const formData = new FormData();

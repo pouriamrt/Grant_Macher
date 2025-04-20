@@ -1,9 +1,17 @@
 import React, { useState } from 'react';
 import { toast, Toaster } from 'react-hot-toast';
-import { fetchResearchers, scrapeNIHGrants, scrapeCIHRGrants, matchSpecificResearcher, matchAllResearchers } from '../services/api';
+import { 
+  fetchResearchers, 
+  scrapeNIHGrants, 
+  scrapeCIHRGrants, 
+  matchSpecificResearcher, 
+  matchAllResearchers, 
+  sendAllMatchesEmail 
+} from '../services/api';
 
 const Home = () => {
   const [loading, setLoading] = useState(false);
+  const [emailSending, setEmailSending] = useState(false);
   const [researcherName, setResearcherName] = useState('');
 
   const handleScrapeNIH = async () => {
@@ -71,6 +79,18 @@ const Home = () => {
     }
   };
 
+  const handleSendAllMatchesEmail = async () => {
+    setEmailSending(true);
+    try {
+      await sendAllMatchesEmail();
+      toast.success('Emails sent to all researchers!');
+    } catch (error) {
+      toast.error('Failed to send emails.');
+    } finally {
+      setEmailSending(false);
+    }
+  };
+
   return (
     <div className="p-6">
       <Toaster />
@@ -128,6 +148,15 @@ const Home = () => {
           disabled={loading}
         >
           {loading ? 'Processing...' : 'Match All Researchers'}
+        </button>
+
+        {/* NEW: Button to email all matches */}
+        <button
+          onClick={handleSendAllMatchesEmail}
+          className="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 disabled:opacity-50"
+          disabled={emailSending}
+        >
+          {emailSending ? 'Sending Emails...' : 'Send Emails to All Researchers'}
         </button>
 
       </div>
