@@ -1,4 +1,7 @@
 import os
+from dotenv import load_dotenv
+
+load_dotenv(".env", override=True)
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -14,6 +17,6 @@ class Config:
     MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 587
     MAIL_USERNAME = 'pouriamortezaagha7@gmail.com'
-    MAIL_PASSWORD = 'ksgu zakr rwmz orvy'
+    MAIL_PASSWORD = os.environ.get('GMAIL_PASSWORD')
     MAIL_USE_TLS = True
     MAIL_DEFAULT_SENDER = 'pouriamortezaagha7@gmail.com'
