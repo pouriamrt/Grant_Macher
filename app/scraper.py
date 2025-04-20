@@ -4,6 +4,7 @@ from app import db
 from scrapegraphai.graphs import SmartScraperGraph
 # import json
 import time
+from datetime import datetime
 import re
 from app.utils.utils import remove_duplicates_preserve_order, initials_in_email
 from serpapi import GoogleSearch
@@ -63,7 +64,7 @@ def scrape_cihr_ai():
             description = result["content"].get("abstract", "").replace("N/A", "")
             deadline = result["content"].get("deadline", "").replace("N/A", "")
             amount = result["content"].get("available_funds", "").replace("N/A", "")
-            source = "CIHR"
+            source = full_url if full_url else "CIHR"
             
             existing_grant = Grant.query.filter_by(title=title, source=source).first()
             if existing_grant:
@@ -88,10 +89,10 @@ def scrape_nih_api():
     headers = {"Content-Type": "application/json"}
     payload = {
         "criteria": {
-            "fiscal_years": [2025],
+            "fiscal_years": [int(datetime.now().year)],
             "activity_codes": ["R01", "R21", "P01"]
         },
-        "include_fields": ["ProjectTitle", "AbstractText", "AwardAmount", "AwardNoticeDate", "FundingICs"],
+        "include_fields": ["ProjectTitle", "AbstractText", "AwardAmount", "AwardNoticeDate", "FundingICs", "ProjectNum"],
         "offset": 0,
         "limit": 25
     }
@@ -104,7 +105,8 @@ def scrape_nih_api():
             description = project.get("abstract_text", "")
             deadline = project.get("award_notice_date", "")
             amount = project.get("award_amount", "")
-            source = "NIH"
+            project_number = project.get("project_num", "")
+            source = f"https://reporter.nih.gov/project-details/{project_number}" if project_number else "NIH"
             
             existing_grant = Grant.query.filter_by(title=title, source=source).first()
             if existing_grant:
