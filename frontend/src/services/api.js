@@ -46,16 +46,22 @@ export const sendAllMatchesEmail = async () => {
 };
 
 // Matching
-export const matchSpecificResearcher = async (researcherName) => {
+export const matchSpecificResearcher = async (researcherName, threshold, similarityThreshold) => {
   const formData = new FormData();
   formData.append('researcher_name', researcherName);
+  formData.append('threshold', threshold);
+  formData.append('similarity_threshold', similarityThreshold);
 
   const response = await axios.post(`${API_BASE_URL}/generate_matches`, formData);
   return response.data;
 };
 
-export const matchAllResearchers = async () => {
-  const response = await axios.post(`${API_BASE_URL}/generate_matches`);
+export const matchAllResearchers = async (threshold, similarityThreshold) => {
+  const formData = new FormData();
+  formData.append('threshold', threshold);
+  formData.append('similarity_threshold', similarityThreshold);
+
+  const response = await axios.post(`${API_BASE_URL}/generate_matches`, formData);
   return response.data;
 };
 

@@ -40,7 +40,7 @@ class MatchedGrant(BaseModel):
     match_score: float = Field(description="The score of the match between 0 and 1.")
     reason: str = Field(description="The reason for the score.")
 
-def generate_matches(researcher_name=None):
+def generate_matches(researcher_name=None, threshold=0.7, similarity_threshold=0.35):
     llm = ChatOpenAI(model="gpt-4.1-mini", temperature=0)
 
     prompt = ChatPromptTemplate.from_template(
@@ -72,7 +72,7 @@ def generate_matches(researcher_name=None):
 
     
     chain = (prompt | llm.with_structured_output(MatchedGrant)).with_config({"run_name": "grant_matcher"})
-    prefiltered = prefilter_pairs(researchers, grants)
+    prefiltered = prefilter_pairs(researchers, grants, similarity_threshold)
     
     seen_fingerprints = {
         m.fingerprint for m in Match.query.with_entities(Match.fingerprint) if m.fingerprint
@@ -116,7 +116,7 @@ def generate_matches(researcher_name=None):
     for input_chunk, meta_chunk in tqdm(zip(chunks(batch_inputs, 10), chunks(meta_pairs, 10))):
         results = chain.batch(input_chunk)
         for (researcher_id, grant_id, fingerprint), result in zip(meta_chunk, results):
-            if result.match_score > 0.7:
+            if result.match_score > threshold:
                 db.session.add(Match(
                     researcher_id=researcher_id,
                     grant_id=grant_id,

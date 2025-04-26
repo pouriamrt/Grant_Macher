@@ -13,7 +13,16 @@ def run_match_agent():
         researcher_name = request.form['researcher_name']
     except:
         researcher_name = None
-    generate_matches(researcher_name)
+    # Get thresholds from request, with defaults
+    try:
+        threshold = float(request.form.get('threshold', 0.7))
+    except:
+        threshold = 0.7
+    try:
+        similarity_threshold = float(request.form.get('similarity_threshold', 0.35))
+    except:
+        similarity_threshold = 0.35
+    generate_matches(researcher_name, threshold, similarity_threshold)
     return jsonify({"status": "Matches generated using AI agent."})
 
 @main.route('/send_matches', methods=['POST'])

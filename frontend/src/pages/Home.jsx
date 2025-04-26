@@ -13,6 +13,11 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
   const [emailSending, setEmailSending] = useState(false);
   const [researcherName, setResearcherName] = useState('');
+  const [threshold, setThreshold] = useState('medium');
+  const [similarityThreshold, setSimilarityThreshold] = useState('medium');
+
+  const thresholdMap = { low: 0.3, medium: 0.5, high: 0.7 };
+  const similarityMap = { low: 0.2, medium: 0.3, high: 0.5 };
 
   const handleScrapeNIH = async () => {
     setLoading(true);
@@ -57,7 +62,11 @@ const Home = () => {
     }
     setLoading(true);
     try {
-      await matchSpecificResearcher(researcherName.trim());
+      await matchSpecificResearcher(
+        researcherName.trim(),
+        thresholdMap[threshold],
+        similarityMap[similarityThreshold]
+      );
       toast.success(`Matches generated for ${researcherName}!`);
       setResearcherName('');
     } catch (error) {
@@ -70,7 +79,10 @@ const Home = () => {
   const handleMatchAllResearchers = async () => {
     setLoading(true);
     try {
-      await matchAllResearchers();
+      await matchAllResearchers(
+        thresholdMap[threshold],
+        similarityMap[similarityThreshold]
+      );
       toast.success('Matches generated for all researchers!');
     } catch (error) {
       toast.error('Failed to generate matches.');
@@ -95,7 +107,7 @@ const Home = () => {
     <div className="p-6">
       <Toaster />
       <h1 className="text-3xl font-bold mb-4">Welcome to Grant Matcher</h1>
-      <p className="mb-6 text-gray-700">Use the quick actions below or navigate using the menu.</p>
+      <p className="mb-6 text-gray-700">Use the quick actions below and navigate using the menu.</p>
 
       <div className="flex flex-col gap-4">
 
@@ -123,8 +135,46 @@ const Home = () => {
           {loading ? 'Processing...' : 'Get Researchers'}
         </button>
 
+        {/* Beautiful Threshold Sliders Card */}
+        <div className="bg-white rounded-xl shadow-lg p-6 flex flex-col sm:flex-row items-center justify-center gap-8 border border-gray-100">
+          <div className="flex flex-col items-center">
+            <label className="text-sm font-semibold text-gray-700 mb-2">Match Score Threshold</label>
+            <input
+              type="range"
+              min="0"
+              max="2"
+              step="1"
+              value={['low','medium','high'].indexOf(threshold)}
+              onChange={e => setThreshold(['low','medium','high'][parseInt(e.target.value)])}
+              className="w-40 accent-indigo-500 h-2 rounded-lg appearance-none bg-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            />
+            <div className="flex justify-between w-40 mt-1 text-xs text-gray-500">
+              <span className={threshold==='low' ? 'font-bold text-indigo-600' : ''}>Low</span>
+              <span className={threshold==='medium' ? 'font-bold text-indigo-600' : ''}>Medium</span>
+              <span className={threshold==='high' ? 'font-bold text-indigo-600' : ''}>High</span>
+            </div>
+          </div>
+          <div className="flex flex-col items-center">
+            <label className="text-sm font-semibold text-gray-700 mb-2">Similarity Threshold</label>
+            <input
+              type="range"
+              min="0"
+              max="2"
+              step="1"
+              value={['low','medium','high'].indexOf(similarityThreshold)}
+              onChange={e => setSimilarityThreshold(['low','medium','high'][parseInt(e.target.value)])}
+              className="w-40 accent-teal-500 h-2 rounded-lg appearance-none bg-gray-200 focus:outline-none focus:ring-2 focus:ring-teal-400"
+            />
+            <div className="flex justify-between w-40 mt-1 text-xs text-gray-500">
+              <span className={similarityThreshold==='low' ? 'font-bold text-teal-600' : ''}>Low</span>
+              <span className={similarityThreshold==='medium' ? 'font-bold text-teal-600' : ''}>Medium</span>
+              <span className={similarityThreshold==='high' ? 'font-bold text-teal-600' : ''}>High</span>
+            </div>
+          </div>
+        </div>
+
         {/* Input for matching a specific researcher */}
-        <div className="flex flex-col sm:flex-row gap-2 items-center">
+        <div className="flex flex-col sm:flex-row gap-2 items-center w-full">
           <input
             type="text"
             value={researcherName}
