@@ -8,6 +8,7 @@ migrations/
 *.ipynb
 test.*
 app.db
+README.md
 
 # Logs
 logs
