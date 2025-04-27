@@ -24,6 +24,7 @@ class Match(db.Model):
     match_score = db.Column(db.Float)
     reason = db.Column(db.Text)
     fingerprint = db.Column(db.String, unique=True)
+    feedback = db.Column(db.String)
     
     researcher = db.relationship('Researcher', backref='matches', lazy=True)
     grant = db.relationship('Grant', backref='matches', lazy=True)

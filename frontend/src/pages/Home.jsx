@@ -104,111 +104,113 @@ const Home = () => {
   };
 
   return (
-    <div className="p-6">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex flex-col items-center justify-start py-10 px-2">
       <Toaster />
-      <h1 className="text-3xl font-bold mb-4">Welcome to Grant Matcher</h1>
-      <p className="mb-6 text-gray-700">Use the quick actions below and navigate using the menu.</p>
+      <div className="w-full max-w-2xl bg-white rounded-2xl border border-blue-100 shadow-xl p-8 flex flex-col items-center">
+        <h1 className="text-4xl font-bold mb-2 text-center text-blue-800 drop-shadow">Welcome to Grant Matcher</h1>
+        <p className="mb-8 text-gray-700 text-center text-lg">Use the quick actions below and navigate using the menu.</p>
 
-      <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-5 w-full">
 
-        <button
-          onClick={handleScrapeNIH}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:opacity-50"
-          disabled={loading}
-        >
-          {loading ? 'Processing...' : 'Scrape NIH Grants'}
-        </button>
-
-        <button
-          onClick={handleScrapeCIHR}
-          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 disabled:opacity-50"
-          disabled={loading}
-        >
-          {loading ? 'Processing...' : 'Scrape CIHR Grants'}
-        </button>
-
-        <button
-          onClick={handleGetResearchers}
-          className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 disabled:opacity-50"
-          disabled={loading}
-        >
-          {loading ? 'Processing...' : 'Get Researchers'}
-        </button>
-
-        {/* Beautiful Threshold Sliders Card */}
-        <div className="bg-white rounded-xl shadow-lg p-6 flex flex-col sm:flex-row items-center justify-center gap-8 border border-gray-100">
-          <div className="flex flex-col items-center">
-            <label className="text-sm font-semibold text-gray-700 mb-2">Match Score Threshold</label>
-            <input
-              type="range"
-              min="0"
-              max="2"
-              step="1"
-              value={['low','medium','high'].indexOf(threshold)}
-              onChange={e => setThreshold(['low','medium','high'][parseInt(e.target.value)])}
-              className="w-40 accent-indigo-500 h-2 rounded-lg appearance-none bg-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-            />
-            <div className="flex justify-between w-40 mt-1 text-xs text-gray-500">
-              <span className={threshold==='low' ? 'font-bold text-indigo-600' : ''}>Low</span>
-              <span className={threshold==='medium' ? 'font-bold text-indigo-600' : ''}>Medium</span>
-              <span className={threshold==='high' ? 'font-bold text-indigo-600' : ''}>High</span>
-            </div>
-          </div>
-          <div className="flex flex-col items-center">
-            <label className="text-sm font-semibold text-gray-700 mb-2">Similarity Threshold</label>
-            <input
-              type="range"
-              min="0"
-              max="2"
-              step="1"
-              value={['low','medium','high'].indexOf(similarityThreshold)}
-              onChange={e => setSimilarityThreshold(['low','medium','high'][parseInt(e.target.value)])}
-              className="w-40 accent-teal-500 h-2 rounded-lg appearance-none bg-gray-200 focus:outline-none focus:ring-2 focus:ring-teal-400"
-            />
-            <div className="flex justify-between w-40 mt-1 text-xs text-gray-500">
-              <span className={similarityThreshold==='low' ? 'font-bold text-teal-600' : ''}>Low</span>
-              <span className={similarityThreshold==='medium' ? 'font-bold text-teal-600' : ''}>Medium</span>
-              <span className={similarityThreshold==='high' ? 'font-bold text-teal-600' : ''}>High</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Input for matching a specific researcher */}
-        <div className="flex flex-col sm:flex-row gap-2 items-center w-full">
-          <input
-            type="text"
-            value={researcherName}
-            onChange={(e) => setResearcherName(e.target.value)}
-            placeholder="Enter Researcher Name"
-            className="border p-2 rounded w-full sm:w-2/3"
-          />
           <button
-            onClick={handleMatchSpecificResearcher}
-            className="bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600 disabled:opacity-50 w-full sm:w-1/3"
+            onClick={handleScrapeNIH}
+            className="bg-gradient-to-r from-blue-400 to-blue-600 text-white px-6 py-3 rounded-xl shadow-md hover:from-blue-500 hover:to-blue-700 transition-all duration-200 text-lg font-semibold disabled:opacity-50"
             disabled={loading}
           >
-            {loading ? 'Processing...' : 'Match This Researcher'}
+            {loading ? 'Processing...' : 'Scrape NIH Grants'}
           </button>
+
+          <button
+            onClick={handleScrapeCIHR}
+            className="bg-gradient-to-r from-green-400 to-green-600 text-white px-6 py-3 rounded-xl shadow-md hover:from-green-500 hover:to-green-700 transition-all duration-200 text-lg font-semibold disabled:opacity-50"
+            disabled={loading}
+          >
+            {loading ? 'Processing...' : 'Scrape CIHR Grants'}
+          </button>
+
+          <button
+            onClick={handleGetResearchers}
+            className="bg-gradient-to-r from-purple-400 to-purple-600 text-white px-6 py-3 rounded-xl shadow-md hover:from-purple-500 hover:to-purple-700 transition-all duration-200 text-lg font-semibold disabled:opacity-50"
+            disabled={loading}
+          >
+            {loading ? 'Processing...' : 'Get Researchers'}
+          </button>
+
+          {/* Beautiful Threshold Sliders Card */}
+          <div className="bg-blue-50 rounded-xl shadow-inner p-6 flex flex-col sm:flex-row items-center justify-center gap-8 border border-blue-100">
+            <div className="flex flex-col items-center">
+              <label className="text-sm font-semibold text-gray-700 mb-2">Match Score Threshold</label>
+              <input
+                type="range"
+                min="0"
+                max="2"
+                step="1"
+                value={['low','medium','high'].indexOf(threshold)}
+                onChange={e => setThreshold(['low','medium','high'][parseInt(e.target.value)])}
+                className="w-40 accent-indigo-500 h-2 rounded-lg appearance-none bg-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              />
+              <div className="flex justify-between w-40 mt-1 text-xs text-gray-500">
+                <span className={threshold==='low' ? 'font-bold text-indigo-600' : ''}>Low</span>
+                <span className={threshold==='medium' ? 'font-bold text-indigo-600' : ''}>Medium</span>
+                <span className={threshold==='high' ? 'font-bold text-indigo-600' : ''}>High</span>
+              </div>
+            </div>
+            <div className="flex flex-col items-center">
+              <label className="text-sm font-semibold text-gray-700 mb-2">Similarity Threshold</label>
+              <input
+                type="range"
+                min="0"
+                max="2"
+                step="1"
+                value={['low','medium','high'].indexOf(similarityThreshold)}
+                onChange={e => setSimilarityThreshold(['low','medium','high'][parseInt(e.target.value)])}
+                className="w-40 accent-teal-500 h-2 rounded-lg appearance-none bg-gray-200 focus:outline-none focus:ring-2 focus:ring-teal-400"
+              />
+              <div className="flex justify-between w-40 mt-1 text-xs text-gray-500">
+                <span className={similarityThreshold==='low' ? 'font-bold text-teal-600' : ''}>Low</span>
+                <span className={similarityThreshold==='medium' ? 'font-bold text-teal-600' : ''}>Medium</span>
+                <span className={similarityThreshold==='high' ? 'font-bold text-teal-600' : ''}>High</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Input for matching a specific researcher */}
+          <div className="flex flex-col sm:flex-row gap-2 items-center w-full">
+            <input
+              type="text"
+              value={researcherName}
+              onChange={(e) => setResearcherName(e.target.value)}
+              placeholder="Enter Researcher Name"
+              className="border p-3 rounded-lg w-full sm:w-2/3 shadow focus:outline-none focus:ring-2 focus:ring-blue-300 text-lg"
+            />
+            <button
+              onClick={handleMatchSpecificResearcher}
+              className="bg-gradient-to-r from-indigo-400 to-indigo-600 text-white px-6 py-3 rounded-xl shadow-md hover:from-indigo-500 hover:to-indigo-700 transition-all duration-200 text-lg font-semibold w-full sm:w-1/3 disabled:opacity-50"
+              disabled={loading}
+            >
+              {loading ? 'Processing...' : 'Match This Researcher'}
+            </button>
+          </div>
+
+          {/* Button to match all researchers */}
+          <button
+            onClick={handleMatchAllResearchers}
+            className="bg-gradient-to-r from-red-400 to-red-600 text-white px-6 py-3 rounded-xl shadow-md hover:from-red-500 hover:to-red-700 transition-all duration-200 text-lg font-semibold disabled:opacity-50"
+            disabled={loading}
+          >
+            {loading ? 'Processing...' : 'Match All Researchers'}
+          </button>
+
+          {/* NEW: Button to email all matches */}
+          <button
+            onClick={handleSendAllMatchesEmail}
+            className="bg-gradient-to-r from-teal-400 to-teal-600 text-white px-6 py-3 rounded-xl shadow-md hover:from-teal-500 hover:to-teal-700 transition-all duration-200 text-lg font-semibold disabled:opacity-50"
+            disabled={emailSending}
+          >
+            {emailSending ? 'Sending Emails...' : 'Send Emails to All Researchers'}
+          </button>
+
         </div>
-
-        {/* Button to match all researchers */}
-        <button
-          onClick={handleMatchAllResearchers}
-          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 disabled:opacity-50"
-          disabled={loading}
-        >
-          {loading ? 'Processing...' : 'Match All Researchers'}
-        </button>
-
-        {/* NEW: Button to email all matches */}
-        <button
-          onClick={handleSendAllMatchesEmail}
-          className="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 disabled:opacity-50"
-          disabled={emailSending}
-        >
-          {emailSending ? 'Sending Emails...' : 'Send Emails to All Researchers'}
-        </button>
-
       </div>
     </div>
   );

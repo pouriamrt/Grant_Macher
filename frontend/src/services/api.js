@@ -75,3 +75,11 @@ export const scrapeCIHRGrants = async () => {
   const response = await axios.post(`${API_BASE_URL}/scrape_cihr`);
   return response.data;
 };
+
+export const setMatchFeedback = async (matchId, feedback) => {
+  const response = await axios.post(
+    `${API_BASE_URL}/matches/${matchId}/feedback`,
+    { feedback }
+  );
+  return response.data;
+};

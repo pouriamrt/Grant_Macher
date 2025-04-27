@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from app.models import Match, Researcher, Grant
-from app import mail
+from app import mail, db
 from flask_mail import Message
 from app.agents.grant_matcher import generate_matches
 from app.scraper import scrape_nih_api, scrape_cihr_ai, find_email
@@ -132,8 +132,20 @@ def get_matches():
             'researcher_name': m.researcher.name if m.researcher else None,
             'grant_title': m.grant.title if m.grant else None,
             'match_score': m.match_score,
-            'reason': m.reason
+            'reason': m.reason,
+            'feedback': m.feedback
         }
         for m in matches
     ]
     return jsonify(result)
+
+@main.route('/matches/<int:match_id>/feedback', methods=['POST'])
+def set_match_feedback(match_id):
+    data = request.get_json()
+    feedback = data.get('feedback') if data else None
+    if feedback not in ['up', 'down', None]:
+        return jsonify({'error': 'Invalid feedback'}), 400
+    match = Match.query.get_or_404(match_id)
+    match.feedback = feedback
+    db.session.commit()
+    return jsonify({'status': 'Feedback updated'})

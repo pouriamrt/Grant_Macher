@@ -20,20 +20,20 @@ const Researchers = () => {
 
   return (
     <div className="container mx-auto mt-10">
-      <h1 className="text-3xl font-bold mb-6">Researchers</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center text-blue-800 drop-shadow">Researchers</h1>
 
       {researchers.length === 0 ? (
-        <p className="text-gray-600">No researchers found.</p>
+        <p className="text-gray-600 text-center">No researchers found.</p>
       ) : (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {researchers.map((researcher) => (
             <Link
               key={researcher.id}
               to={`/researchers/${researcher.id}`}
-              className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition block"
+              className="bg-white p-8 rounded-2xl border border-blue-100 shadow-xl hover:shadow-2xl transition-all duration-300 flex flex-col items-center focus:outline-none focus:ring-2 focus:ring-blue-300"
             >
-              <h2 className="text-xl font-semibold">{researcher.name}</h2>
-              <p className="text-gray-500 mt-2">Researcher ID: {researcher.id}</p>
+              <h2 className="text-2xl font-semibold text-blue-700 text-center mb-2">{researcher.name}</h2>
+              <p className="text-gray-500 text-center">Researcher ID: <span className="font-bold text-blue-700">{researcher.id}</span></p>
             </Link>
           ))}
         </div>
