@@ -6,7 +6,8 @@ import {
   scrapeCIHRGrants, 
   matchSpecificResearcher, 
   matchAllResearchers, 
-  sendAllMatchesEmail 
+  sendAllMatchesEmail,
+  scrapeCBRFGrants
 } from '../services/api';
 
 const Home = () => {
@@ -38,6 +39,18 @@ const Home = () => {
       toast.success('CIHR Grants scraped successfully!');
     } catch (error) {
       toast.error('Failed to scrape CIHR grants.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleScrapeCBRF = async () => {
+    setLoading(true);
+    try {
+      await scrapeCBRFGrants();
+      toast.success('CBRF Grants scraped successfully!');
+    } catch (error) {
+      toast.error('Failed to scrape CBRF grants.');
     } finally {
       setLoading(false);
     }
@@ -126,6 +139,14 @@ const Home = () => {
             disabled={loading}
           >
             {loading ? 'Processing...' : 'Scrape CIHR Grants'}
+          </button>
+
+          <button
+            onClick={handleScrapeCBRF}
+            className="bg-gradient-to-r from-red-400 to-red-600 text-white px-6 py-3 rounded-xl shadow-md hover:from-red-500 hover:to-red-700 transition-all duration-200 text-lg font-semibold disabled:opacity-50"
+            disabled={loading}
+          >
+            {loading ? 'Processing...' : 'Scrape CBRF Grants'}
           </button>
 
           <button

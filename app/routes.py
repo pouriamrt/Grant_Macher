@@ -3,7 +3,7 @@ from app.models import Match, Researcher, Grant
 from app import mail, db
 from flask_mail import Message
 from app.agents.grant_matcher import generate_matches
-from app.scraper import scrape_nih_api, scrape_cihr_ai, find_email
+from app.scraper import scrape_nih_api, scrape_cihr_ai, find_email, scrape_cbrf_ai
 
 main = Blueprint('main', __name__)
 
@@ -94,7 +94,10 @@ def scrape_cihr():
     scrape_cihr_ai()
     return jsonify({"status": "CIHR grants scraped and stored."})
 
-
+@main.route('/scrape_cbrf', methods=['POST'])
+def scrape_cbrf():
+    scrape_cbrf_ai()
+    return jsonify({"status": "CBRF grants scraped and stored."})
 
 
 @main.route('/researchers')

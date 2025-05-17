@@ -76,6 +76,11 @@ export const scrapeCIHRGrants = async () => {
   return response.data;
 };
 
+export const scrapeCBRFGrants = async () => {
+  const response = await axios.post(`${API_BASE_URL}/scrape_cbrf`);
+  return response.data;
+};
+
 export const setMatchFeedback = async (matchId, feedback) => {
   const response = await axios.post(
     `${API_BASE_URL}/matches/${matchId}/feedback`,
