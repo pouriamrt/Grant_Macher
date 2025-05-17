@@ -7,7 +7,10 @@ import {
   matchSpecificResearcher, 
   matchAllResearchers, 
   sendAllMatchesEmail,
-  scrapeCBRFGrants
+  scrapeCBRFGrants,
+  scrapeTohamoGrants,
+  scrapeOntarioHealthGrants,
+  scrapeStemCellNetworkGrants
 } from '../services/api';
 
 const Home = () => {
@@ -51,6 +54,42 @@ const Home = () => {
       toast.success('CBRF Grants scraped successfully!');
     } catch (error) {
       toast.error('Failed to scrape CBRF grants.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleScrapeTohamo = async () => {
+    setLoading(true);
+    try {
+      await scrapeTohamoGrants();
+      toast.success('Tohamo Grants scraped successfully!');
+    } catch (error) {
+      toast.error('Failed to scrape Tohamo grants.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleScrapeOntarioHealth = async () => {
+    setLoading(true);
+    try {
+      await scrapeOntarioHealthGrants();
+      toast.success('Ontario Health Grants scraped successfully!');
+    } catch (error) {
+      toast.error('Failed to scrape Ontario Health grants.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleScrapeStemCellNetwork = async () => {
+    setLoading(true);
+    try {
+      await scrapeStemCellNetworkGrants();
+      toast.success('Stem Cell Network Grants scraped successfully!');
+    } catch (error) {
+      toast.error('Failed to scrape Stem Cell Network grants.');
     } finally {
       setLoading(false);
     }
@@ -149,6 +188,30 @@ const Home = () => {
             {loading ? 'Processing...' : 'Scrape CBRF Grants'}
           </button>
 
+          <button
+            onClick={handleScrapeTohamo}
+            className="bg-gradient-to-r from-orange-400 to-orange-600 text-white px-6 py-3 rounded-xl shadow-md hover:from-orange-500 hover:to-orange-700 transition-all duration-200 text-lg font-semibold disabled:opacity-50"
+            disabled={loading}
+          >
+            {loading ? 'Processing...' : 'Scrape Tohamo Grants'}
+          </button>
+
+          <button
+            onClick={handleScrapeOntarioHealth}
+            className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-white px-6 py-3 rounded-xl shadow-md hover:from-yellow-500 hover:to-yellow-700 transition-all duration-200 text-lg font-semibold disabled:opacity-50"
+            disabled={loading}
+          >
+            {loading ? 'Processing...' : 'Scrape Ontario Health Grants'}
+          </button>
+
+          <button
+            onClick={handleScrapeStemCellNetwork}
+            className="bg-gradient-to-r from-pink-400 to-pink-600 text-white px-6 py-3 rounded-xl shadow-md hover:from-pink-500 hover:to-pink-700 transition-all duration-200 text-lg font-semibold disabled:opacity-50"
+            disabled={loading}
+          >
+            {loading ? 'Processing...' : 'Scrape Stem Cell Network Grants'}
+          </button>
+          
           <button
             onClick={handleGetResearchers}
             className="bg-gradient-to-r from-purple-400 to-purple-600 text-white px-6 py-3 rounded-xl shadow-md hover:from-purple-500 hover:to-purple-700 transition-all duration-200 text-lg font-semibold disabled:opacity-50"

@@ -81,6 +81,21 @@ export const scrapeCBRFGrants = async () => {
   return response.data;
 };
 
+export const scrapeTohamoGrants = async () => {
+  const response = await axios.post(`${API_BASE_URL}/scrape_tohamo`);
+  return response.data;
+};
+
+export const scrapeOntarioHealthGrants = async () => {
+  const response = await axios.post(`${API_BASE_URL}/scrape_ontario_health`);
+  return response.data;
+};
+
+export const scrapeStemCellNetworkGrants = async () => {
+  const response = await axios.post(`${API_BASE_URL}/scrape_stemcell`);
+  return response.data;
+};
+
 export const setMatchFeedback = async (matchId, feedback) => {
   const response = await axios.post(
     `${API_BASE_URL}/matches/${matchId}/feedback`,

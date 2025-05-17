@@ -3,7 +3,7 @@ from app.models import Match, Researcher, Grant
 from app import mail, db
 from flask_mail import Message
 from app.agents.grant_matcher import generate_matches
-from app.scraper import scrape_nih_api, scrape_cihr_ai, find_email, scrape_cbrf_ai
+from app.scraper import scrape_nih_api, scrape_cihr_ai, find_email, scrape_cbrf_ai, scrape_tohamo_funding, scrape_ontario_health_ai, scrape_stemcell_funding
 
 main = Blueprint('main', __name__)
 
@@ -98,6 +98,21 @@ def scrape_cihr():
 def scrape_cbrf():
     scrape_cbrf_ai()
     return jsonify({"status": "CBRF grants scraped and stored."})
+
+@main.route('/scrape_tohamo', methods=['POST'])
+def scrape_tohamo():
+    scrape_tohamo_funding()
+    return jsonify({"status": "Tohamo grants scraped and stored."})
+
+@main.route('/scrape_ontario_health', methods=['POST'])
+def scrape_ontario_health():
+    scrape_ontario_health_ai()
+    return jsonify({"status": "Ontario Health grants scraped and stored."})
+
+@main.route('/scrape_stemcell', methods=['POST'])
+def scrape_stemcell():
+    scrape_stemcell_funding()
+    return jsonify({"status": "Stem Cell Network grants scraped and stored."})
 
 
 @main.route('/researchers')
