@@ -371,6 +371,76 @@ def scrape_stemcell_funding():
     # print(json.dumps(results["content"], indent=4))
     db.session.commit()
     
+########################### Cancer AI ###########################
+def scrape_cancer_ai():
+    graph_config = {
+        "llm": {
+            "api_key": getenv("OPENAI_API_KEY"),
+            "model": "openai/gpt-4o-mini",
+            "temperature": 0.0,
+        },
+        "verbose": True,
+        "headless": True,
+    }
+    BASE_URL = "https://cancer.ca"
+    
+    scraper = SmartScraperGraph(
+        prompt="Extract **all** of the link urls in the 'Our funding programs' section with status as 'Open' from the webpage.",
+        source=f"{BASE_URL}/en/research/for-researchers/funding-opportunities",
+        config=graph_config,
+    )
+    reference = scraper.run()
+    # print(reference)
+    
+    if not reference or "content" not in reference or len(reference["content"]) < 1:
+        raise ValueError("No links were extracted from the source page.")
+    
+    results = []
+    for idx, item in enumerate(reference["content"], start=1):
+        item_link = item.replace("https://", "").strip()
+        full_url = f"{BASE_URL}/{item_link}"
+        print(f"[{idx}] Scraping: {full_url}")
+        try:
+            detail_scraper = SmartScraperGraph(
+                prompt=(
+                    "Extract the funding_topic, abstract, fund_value, and deadline from the details page. "
+                    "Each category may contain multiple values; extract all available information."
+                    "If the information is not available, return 'N/A'."
+                    "Return the information in a dictionary format and all keys and values should be strings and only one value per key."
+                    "Include number of grants, number of years for the grant inside the fund_value value if available."
+                ),
+                source=full_url,
+                config=graph_config,
+            )
+
+            result = detail_scraper.run()
+            results.append({
+                "url": full_url,
+                "data": result,
+            })
+            
+            title = result["content"].get("funding_topic", "").replace("N/A", "")
+            description = result["content"].get("abstract", "").replace("N/A", "")
+            deadline = result["content"].get("deadline", "").replace("N/A", "")
+            amount = result["content"].get("fund_value", "").replace("N/A", "")
+            source = full_url if full_url else "Cancer AI"
+            
+            existing_grant = Grant.query.filter_by(title=title, source=source).first()
+            if existing_grant:
+                print(f"Skipping duplicate grant: {title}")
+                continue
+            
+            db.session.add(Grant(title=title, description=description, deadline=deadline, amount=amount, source=source))
+            
+            time.sleep(0.5)
+
+        except Exception as e:
+            print(f"Failed to scrape {full_url}: {e}")
+            continue
+        
+    # print(json.dumps(results, indent=4))
+    db.session.commit()
+
 
 ########################### ORCID ###########################
 def search_google_serpapi(query, value='link'):

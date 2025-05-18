@@ -10,7 +10,8 @@ import {
   scrapeCBRFGrants,
   scrapeTohamoGrants,
   scrapeOntarioHealthGrants,
-  scrapeStemCellNetworkGrants
+  scrapeStemCellNetworkGrants,
+  scrapeCancerGrants
 } from '../services/api';
 
 const Home = () => {
@@ -78,6 +79,18 @@ const Home = () => {
       toast.success('Ontario Health Grants scraped successfully!');
     } catch (error) {
       toast.error('Failed to scrape Ontario Health grants.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleScrapeCancer = async () => {
+    setLoading(true);
+    try {
+      await scrapeCancerGrants();
+      toast.success('Cancer AI Grants scraped successfully!');
+    } catch (error) {
+      toast.error('Failed to scrape Cancer AI grants.');
     } finally {
       setLoading(false);
     }
@@ -210,6 +223,14 @@ const Home = () => {
             disabled={loading}
           >
             {loading ? 'Processing...' : 'Scrape Stem Cell Network Grants'}
+          </button>
+
+          <button
+            onClick={handleScrapeCancer}
+            className="bg-gradient-to-r from-indigo-400 to-indigo-600 text-white px-6 py-3 rounded-xl shadow-md hover:from-indigo-500 hover:to-indigo-700 transition-all duration-200 text-lg font-semibold disabled:opacity-50"
+            disabled={loading}
+          >
+            {loading ? 'Processing...' : 'Scrape Cancer Grants'}
           </button>
           
           <button

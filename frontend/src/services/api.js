@@ -96,6 +96,11 @@ export const scrapeStemCellNetworkGrants = async () => {
   return response.data;
 };
 
+export const scrapeCancerGrants = async () => {
+  const response = await axios.post(`${API_BASE_URL}/scrape_cancer`);
+  return response.data;
+};
+
 export const setMatchFeedback = async (matchId, feedback) => {
   const response = await axios.post(
     `${API_BASE_URL}/matches/${matchId}/feedback`,
