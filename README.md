@@ -152,7 +152,7 @@ If you use the **Grant Matching Application** in your work, please cite:
   title   = {Grant Matching Application},
   version = {1.0.0},
   year    = {2025},
-  url     = {https://github.com/your-org/Grant_Matching},
+  url     = {https://github.com/pouriamrt/Grant_Macher},
   license = {MIT},
   note    = {AI-powered researcher–grant semantic matching with Flask + React (Vite)}
 }
