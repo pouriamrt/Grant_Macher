@@ -137,3 +137,22 @@ Built with contributions from the amazing open-source community, including:
 - SerpAPI, ScrapeGraphAI
 
 ---
+
+## 📝 How to Cite
+
+If you use the **Grant Matching Application** in your work, please cite:
+
+**Software**
+> Mortezaagha, P. (2025). *Grant Matching Application (v1.0.0)*. GitHub. https://github.com/your-org/Grant_Matching
+
+### BibTeX
+```bibtex
+@software{mortezaagha_grant_matching_2025,
+  author  = {Mortezaagha, Pouria},
+  title   = {Grant Matching Application},
+  version = {1.0.0},
+  year    = {2025},
+  url     = {https://github.com/your-org/Grant_Matching},
+  license = {MIT},
+  note    = {AI-powered researcher–grant semantic matching with Flask + React (Vite)}
+}
