@@ -143,7 +143,7 @@ Built with contributions from the amazing open-source community, including:
 If you use the **Grant Matching Application** in your work, please cite:
 
 **Software**
-> Mortezaagha, P. (2025). *Grant Matching Application (v1.0.0)*. GitHub. https://github.com/your-org/Grant_Matching
+> Mortezaagha, P. (2025). *Grant Matching Application (v1.0.0)*. GitHub. https://github.com/pouriamrt/Grant_Macher
 
 ### BibTeX
 ```bibtex
