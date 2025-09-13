@@ -1,4 +1,4 @@
-
+ 
 # 🚀 Grant Matching Application
 
 An AI-powered system for intelligently matching researchers with funding opportunities.  
