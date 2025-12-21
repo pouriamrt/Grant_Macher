@@ -1,6 +1,8 @@
  
 # 🚀 Grant Matching Application
 
+[![CodSpeed](https://img.shields.io/badge/CodSpeed-Performance%20Monitoring-blue)](https://codspeed.io/pouriamrt/Grant_Macher)
+
 An AI-powered system for intelligently matching researchers with funding opportunities.  
 Built with a **Flask** backend, a **React (Vite)** frontend, and modern AI/NLP techniques for semantic matching.
 
@@ -22,6 +24,7 @@ Built with a **Flask** backend, a **React (Vite)** frontend, and modern AI/NLP t
 Grant_Matching/
 ├── app/                # Flask backend (models, routes, agents, utilities)
 ├── frontend/           # React frontend (pages, components, services)
+├── benchmarks/         # Performance benchmarks
 ├── config.py           # Centralized configuration
 ├── run.py              # Application launcher
 ├── requirements.txt    # Backend dependencies
@@ -57,7 +60,7 @@ Grant_Matching/
 ```bash
 # 1. Create and activate a virtual environment
 python -m venv venv
-source venv/bin/activate    # Windows: venv\Scripts\activate
+source venv/bin/activate    # Windows: venv\\Scripts\\activate
 
 # 2. Install backend dependencies
 pip install -r requirements.txt
